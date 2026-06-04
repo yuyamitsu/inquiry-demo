@@ -1,50 +1,59 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-  <meta charset="UTF-8">
-  <title>お問い合わせフォーム</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <title>お問い合わせフォーム</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
-  <main class="container">
-    <h1>お問い合わせ</h1>
+    <main class="container">
+        <h1>お問い合わせ</h1>
 
-    <form class="form" id="inquiryForm">
-      <div class="formGroup">
-        <label>お名前</label>
-        <input type="text" id="name" placeholder="山田 太郎">
-      </div>
+        <form class="form" id="inquiryForm">
+            <div class="formGroup">
+                <label for="name">お名前</label>
+                <input type="text" id="name" placeholder="山田 太郎">
+                <p class="errorText" id="nameError"></p>
+            </div>
 
-      <div class="formGroup">
-        <label>メールアドレス</label>
-        <input type="email" id="email" placeholder="sample@example.com">
-      </div>
+            <div class="formGroup">
+                <label for="email">メールアドレス</label>
+                <input type="email" id="email" placeholder="sample@example.com">
+                <p class="errorText" id="emailError"></p>
+            </div>
 
-      <div class="formGroup">
-        <label>件名</label>
-        <input type="text" id="title" placeholder="お問い合わせの件名">
-      </div>
+            <div class="formGroup">
+                <label for="title">件名</label>
+                <input type="text" id="title" placeholder="お問い合わせの件名">
+                <p class="errorText" id="titleError"></p>
+            </div>
 
-      <div class="formGroup">
-        <label>カテゴリ</label>
-        <select id="category">
-          <option value="質問">質問</option>
-          <option value="相談">相談</option>
-          <option value="不具合">不具合</option>
-          <option value="その他">その他</option>
-        </select>
-      </div>
+            <div class="formGroup">
+                <label for="category">カテゴリ</label>
+                <select id="category">
+                    <option value="">選択してください</option>
+                    <option value="質問">質問</option>
+                    <option value="相談">相談</option>
+                    <option value="不具合">不具合</option>
+                    <option value="その他">その他</option>
+                </select>
+                <p class="errorText" id="categoryError"></p>
+            </div>
 
-      <div class="formGroup">
-        <label>お問い合わせ内容</label>
-        <textarea id="body" rows="6" placeholder="お問い合わせ内容を入力してください"></textarea>
-      </div>
+            <div class="formGroup">
+                <label for="body">お問い合わせ内容</label>
+                <textarea id="body" rows="6" placeholder="お問い合わせ内容を入力してください"></textarea>
+                <p class="errorText" id="bodyError"></p>
+            </div>
 
-      <button type="submit" class="button">送信する</button>
-      <a href="pages/admin-list.html" class="backLink">管理者画面へ</a>
-    </form>
-  </main>
+            <button type="submit" class="button">送信する</button>
+            <a href="pages/admin-list.html" class="backLink">管理者画面へ</a>
+        </form>
+    </main>
 
-  <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
+
 </html>

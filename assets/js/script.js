@@ -76,6 +76,94 @@ function escapeHtml(text) {
 }
 
 /**
+ * エラーメッセージを初期化する
+ */
+function clearValidationErrors() {
+  const errorElements = document.querySelectorAll('.errorText');
+  const inputElements = document.querySelectorAll('input, select, textarea');
+
+  errorElements.forEach(function (element) {
+    element.textContent = '';
+  });
+
+  inputElements.forEach(function (element) {
+    element.classList.remove('inputError');
+  });
+}
+
+/**
+ * 指定した項目にエラーメッセージを表示する
+ */
+function setValidationError(inputId, message) {
+  const inputElement = document.getElementById(inputId);
+  const errorElement = document.getElementById(`${inputId}Error`);
+
+  if (inputElement) {
+    inputElement.classList.add('inputError');
+  }
+
+  if (errorElement) {
+    errorElement.textContent = message;
+  }
+}
+
+/**
+ * メールアドレス形式をチェックする
+ */
+function isValidEmail(email) {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
+}
+
+/**
+ * 問い合わせフォームの入力チェックを行う
+ */
+function validateInquiryForm(formData) {
+  let isValid = true;
+
+  clearValidationErrors();
+
+  if (!formData.name) {
+    setValidationError('name', 'お名前を入力してください。');
+    isValid = false;
+  } else if (formData.name.length > 50) {
+    setValidationError('name', 'お名前は50文字以内で入力してください。');
+    isValid = false;
+  }
+
+  if (!formData.email) {
+    setValidationError('email', 'メールアドレスを入力してください。');
+    isValid = false;
+  } else if (!isValidEmail(formData.email)) {
+    setValidationError('email', 'メールアドレスの形式が正しくありません。');
+    isValid = false;
+  }
+
+  if (!formData.title) {
+    setValidationError('title', '件名を入力してください。');
+    isValid = false;
+  } else if (formData.title.length > 100) {
+    setValidationError('title', '件名は100文字以内で入力してください。');
+    isValid = false;
+  }
+
+  if (!formData.category) {
+    setValidationError('category', 'カテゴリを選択してください。');
+    isValid = false;
+  }
+
+  if (!formData.body) {
+    setValidationError('body', 'お問い合わせ内容を入力してください。');
+    isValid = false;
+  } else if (formData.body.length > 1000) {
+    setValidationError('body', 'お問い合わせ内容は1000文字以内で入力してください。');
+    isValid = false;
+  }
+
+  return isValid;
+}
+
+/**
  * 現在のページがpagesフォルダ配下か判定する
  */
 function isPagesDirectory() {
@@ -122,14 +210,17 @@ if (inquiryForm) {
   inquiryForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const title = document.getElementById('title').value.trim();
-    const category = document.getElementById('category').value;
-    const body = document.getElementById('body').value.trim();
+    const formData = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      title: document.getElementById('title').value.trim(),
+      category: document.getElementById('category').value,
+      body: document.getElementById('body').value.trim(),
+    };
 
-    if (!name || !email || !title || !body) {
-      alert('未入力の項目があります。');
+    const isValid = validateInquiryForm(formData);
+
+    if (!isValid) {
       return;
     }
 
@@ -137,11 +228,11 @@ if (inquiryForm) {
 
     const newInquiry = {
       id: Date.now(),
-      name: name,
-      email: email,
-      title: title,
-      category: category,
-      body: body,
+      name: formData.name,
+      email: formData.email,
+      title: formData.title,
+      category: formData.category,
+      body: formData.body,
       status: '未対応',
       adminReply: '',
       createdAt: getCurrentDateTime(),
