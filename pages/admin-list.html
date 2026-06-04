@@ -37,7 +37,10 @@
         <strong id="answeredCount">0</strong>
       </div>
     </div>
-
+    <div class="actionArea">
+      <button class="button" id="addSampleButton">サンプルデータ追加</button>
+      <button class="button resetButton" id="clearAllButton">全データ削除</button>
+    </div>
     <div class="searchBox">
       <input type="text" id="keyword" placeholder="件名・名前・本文で検索">
 
@@ -62,23 +65,24 @@
     </div>
 
     <p class="resultText" id="resultText">検索結果：0件</p>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>件名</th>
-          <th>名前</th>
-          <th>カテゴリ</th>
-          <th>ステータス</th>
-          <th>受付日時</th>
-          <th>詳細</th>
-          <th>削除</th>
-        </tr>
-      </thead>
-      <tbody id="inquiryTableBody">
-      </tbody>
-    </table>
+    <div class="tableWrapper"> 
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>件名</th>
+            <th>名前</th>
+            <th>カテゴリ</th>
+            <th>ステータス</th>
+            <th>受付日時</th>
+            <th>詳細</th>
+            <th>削除</th>
+          </tr>
+        </thead>
+        <tbody id="inquiryTableBody">
+        </tbody>
+      </table>
+    </div>
   </main>
 
   <script src="../assets/js/script.js"></script>

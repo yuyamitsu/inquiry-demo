@@ -218,3 +218,74 @@ textarea {
 .deleteButton:hover {
   background-color: #dc2626;
 }
+
+.actionArea {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: auto;
+    margin: 16px;
+    padding: 20px;
+  }
+
+  .pageHeader {
+    flex-direction: column;
+  }
+
+  .summaryArea {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .searchBox {
+    flex-direction: column;
+  }
+
+  .searchBox input,
+  .searchBox select,
+  .searchBox button {
+    width: 100%;
+  }
+
+  .actionArea {
+    flex-direction: column;
+  }
+
+  .actionArea button {
+    width: 100%;
+  }
+
+  .table {
+    min-width: 800px;
+  }
+
+  .tableWrapper {
+    overflow-x: auto;
+  }
+
+  .detailList {
+    grid-template-columns: 1fr;
+  }
+
+  .detailList dt {
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .summaryArea {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .summaryCard strong {
+    font-size: 24px;
+  }
+}

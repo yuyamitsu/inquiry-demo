@@ -167,6 +167,8 @@ if (inquiryTableBody) {
 
   const searchButton = document.getElementById('searchButton');
   const resetButton = document.getElementById('resetButton');
+  const addSampleButton = document.getElementById('addSampleButton');
+  const clearAllButton = document.getElementById('clearAllButton');
 
   if (searchButton) {
     searchButton.addEventListener('click', function () {
@@ -181,6 +183,18 @@ if (inquiryTableBody) {
       document.getElementById('categoryFilter').value = '';
 
       displayInquiryList();
+    });
+  }
+
+  if (addSampleButton) {
+    addSampleButton.addEventListener('click', function () {
+      addSampleInquiries();
+    });
+  }
+
+  if (clearAllButton) {
+    clearAllButton.addEventListener('click', function () {
+      clearAllInquiries();
     });
   }
 }
@@ -318,6 +332,104 @@ function deleteInquiry(id) {
   });
 
   saveInquiries(updatedInquiries);
+  displayInquiryList();
+}
+
+/**
+ * サンプルデータを追加する
+ */
+function addSampleInquiries() {
+  const isConfirmed = confirm('サンプルデータを追加しますか？');
+
+  if (!isConfirmed) {
+    return;
+  }
+
+  const inquiries = getInquiries();
+  const now = getCurrentDateTime();
+
+  const sampleInquiries = [
+    {
+      id: Date.now() + 1,
+      name: '山田 太郎',
+      email: 'yamada@example.com',
+      title: '料金プランについて知りたい',
+      category: '質問',
+      body: 'サービスの料金プランについて詳しく教えてください。',
+      status: '未対応',
+      adminReply: '',
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: Date.now() + 2,
+      name: '佐藤 花子',
+      email: 'sato@example.com',
+      title: '管理画面にログインできません',
+      category: '不具合',
+      body: '昨日から管理画面にログインできない状態です。確認をお願いします。',
+      status: '対応中',
+      adminReply: '現在、原因を確認しています。',
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: Date.now() + 3,
+      name: '田中 一郎',
+      email: 'tanaka@example.com',
+      title: '導入について相談したい',
+      category: '相談',
+      body: '社内システムの導入について、一度相談したいです。',
+      status: '回答済み',
+      adminReply: 'お問い合わせありがとうございます。担当者よりご連絡いたします。',
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: Date.now() + 4,
+      name: '鈴木 次郎',
+      email: 'suzuki@example.com',
+      title: '請求書の内容について',
+      category: '質問',
+      body: '請求書の明細について確認したい項目があります。',
+      status: '未対応',
+      adminReply: '',
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: Date.now() + 5,
+      name: '高橋 美咲',
+      email: 'takahashi@example.com',
+      title: '画面表示が崩れています',
+      category: '不具合',
+      body: 'スマートフォンで確認した際に、一覧画面の表示が崩れているように見えます。',
+      status: 'クローズ',
+      adminReply: '修正対応が完了しました。',
+      createdAt: now,
+      updatedAt: now,
+    },
+  ];
+
+  saveInquiries([...inquiries, ...sampleInquiries]);
+
+  alert('サンプルデータを追加しました。');
+  displayInquiryList();
+}
+
+/**
+ * 全問い合わせデータを削除する
+ */
+function clearAllInquiries() {
+  const isConfirmed = confirm('すべての問い合わせデータを削除しますか？');
+
+  if (!isConfirmed) {
+    return;
+  }
+
+  saveInquiries([]);
+
+  alert('すべての問い合わせデータを削除しました。');
   displayInquiryList();
 }
 
