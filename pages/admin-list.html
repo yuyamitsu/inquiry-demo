@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>問い合わせ一覧</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <div class="pageHeader">
+      <div>
+        <h1>問い合わせ一覧</h1>
+        <p class="pageLead">登録された問い合わせを確認・検索・管理できます。</p>
+      </div>
+
+      <a href="../index.html" class="button subButton">問い合わせフォームへ</a>
+    </div>
+
+    <div class="summaryArea">
+      <div class="summaryCard">
+        <span class="summaryLabel">全件</span>
+        <strong id="totalCount">0</strong>
+      </div>
+
+      <div class="summaryCard">
+        <span class="summaryLabel">未対応</span>
+        <strong id="newCount">0</strong>
+      </div>
+
+      <div class="summaryCard">
+        <span class="summaryLabel">対応中</span>
+        <strong id="progressCount">0</strong>
+      </div>
+
+      <div class="summaryCard">
+        <span class="summaryLabel">回答済み</span>
+        <strong id="answeredCount">0</strong>
+      </div>
+    </div>
+
+    <div class="searchBox">
+      <input type="text" id="keyword" placeholder="件名・名前・本文で検索">
+
+      <select id="statusFilter">
+        <option value="">すべてのステータス</option>
+        <option value="未対応">未対応</option>
+        <option value="対応中">対応中</option>
+        <option value="回答済み">回答済み</option>
+        <option value="クローズ">クローズ</option>
+      </select>
+
+      <select id="categoryFilter">
+        <option value="">すべてのカテゴリ</option>
+        <option value="質問">質問</option>
+        <option value="相談">相談</option>
+        <option value="不具合">不具合</option>
+        <option value="その他">その他</option>
+      </select>
+
+      <button class="button" id="searchButton">検索</button>
+      <button class="button resetButton" id="resetButton">リセット</button>
+    </div>
+
+    <p class="resultText" id="resultText">検索結果：0件</p>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>件名</th>
+          <th>名前</th>
+          <th>カテゴリ</th>
+          <th>ステータス</th>
+          <th>受付日時</th>
+          <th>詳細</th>
+          <th>削除</th>
+        </tr>
+      </thead>
+      <tbody id="inquiryTableBody">
+      </tbody>
+    </table>
+  </main>
+
+  <script src="../assets/js/script.js"></script>
+</body>
+</html>

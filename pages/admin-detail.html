@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>問い合わせ詳細</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>問い合わせ詳細</h1>
+
+    <section class="card">
+      <h2>問い合わせ内容</h2>
+
+      <dl class="detailList">
+        <dt>ID</dt>
+        <dd id="detailId"></dd>
+
+        <dt>お名前</dt>
+        <dd id="detailName"></dd>
+
+        <dt>メールアドレス</dt>
+        <dd id="detailEmail"></dd>
+
+        <dt>件名</dt>
+        <dd id="detailTitle"></dd>
+
+        <dt>カテゴリ</dt>
+        <dd id="detailCategory"></dd>
+
+        <dt>問い合わせ内容</dt>
+        <dd id="detailBody"></dd>
+
+        <dt>受付日時</dt>
+        <dd id="detailCreatedAt"></dd>
+      </dl>
+    </section>
+
+    <section class="card">
+      <h2>管理者対応</h2>
+
+      <div class="formGroup">
+        <label>ステータス</label>
+        <select id="detailStatus">
+          <option value="未対応">未対応</option>
+          <option value="対応中">対応中</option>
+          <option value="回答済み">回答済み</option>
+          <option value="クローズ">クローズ</option>
+        </select>
+      </div>
+
+      <div class="formGroup">
+        <label>返答内容</label>
+        <textarea id="adminReply" rows="6" placeholder="返答内容を入力してください"></textarea>
+      </div>
+
+      <button class="button" id="saveDetailButton">保存する</button>
+      <a href="admin-list.html" class="backLink">一覧に戻る</a>
+    </section>
+  </main>
+
+  <script src="../assets/js/script.js"></script>
+</body>
+</html>
