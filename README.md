@@ -9,6 +9,8 @@
 
 GitHub Pagesで静的サイトとして公開し、問い合わせ管理システムの画面構成と基本操作フローを確認できる状態にしています。
 
+次の段階では、Laravel + DB構成へ拡張し、問い合わせデータをサーバー側で管理できる形にする予定です。
+
 ## 公開URL
 
 ```text
@@ -253,6 +255,112 @@ CSS、JavaScript、画像などの静的ファイルは `assets` ディレクト
 * 返答履歴の複数管理は未対応
 * 添付ファイル管理は未対応
 
+## Laravel + DB化について
+
+次の段階では、現在 `localStorage` で保持している問い合わせデータをDB保存に置き換えます。
+
+初期実装では、ローカル開発環境で扱いやすいSQLiteを使用して、LaravelのModel、Migration、Controller、BladeによるDB保存の流れを作成します。
+
+実運用や実務に近い構成を想定する段階では、MySQLへの移行を検討します。
+
+### DB方針
+
+| 段階   | DB     | 目的                    |
+| ---- | ------ | --------------------- |
+| 初期実装 | SQLite | ローカル開発でDB保存の流れを確認する   |
+| 実務想定 | MySQL  | 複数ユーザー利用・本番運用に近い構成にする |
+
+SQLiteとMySQLで、LaravelのModel、Migration、Controllerの基本的な考え方は大きく変わりません。
+そのため、まずはSQLiteでDB保存の流れを作成し、必要に応じてMySQLへ切り替える想定です。
+
+## Laravel化する場合の対応イメージ
+
+現在の静的DemoをLaravel化する場合は、以下のように置き換える想定です。
+
+| 現在の静的Demo                 | Laravel化後              |
+| ------------------------- | ---------------------- |
+| `index.html`              | 問い合わせ登録画面              |
+| `pages/admin-list.html`   | 管理者一覧画面                |
+| `pages/admin-detail.html` | 管理者詳細画面                |
+| `localStorage`            | SQLite / MySQL         |
+| `script.js` の登録処理         | Controllerのstore処理     |
+| `script.js` の一覧表示         | Controllerのindex処理     |
+| `script.js` の詳細表示         | Controllerのshow/edit処理 |
+| `script.js` のステータス更新処理    | Controllerのupdate処理    |
+| フロント側入力チェック               | Laravel側バリデーション        |
+| 静的な画面遷移                   | Laravelルーティング          |
+
+## Laravel版の想定構成
+
+```text
+inquiry-demo-laravel
+├── app
+│   ├── Http
+│   │   └── Controllers
+│   │       └── InquiryController.php
+│   └── Models
+│       └── Inquiry.php
+├── database
+│   ├── database.sqlite
+│   └── migrations
+│       └── xxxx_xx_xx_create_inquiries_table.php
+├── resources
+│   └── views
+│       ├── inquiries
+│       │   └── create.blade.php
+│       └── admin
+│           └── inquiries
+│               ├── index.blade.php
+│               └── show.blade.php
+├── routes
+│   └── web.php
+└── docs
+    ├── design.md
+    ├── er-diagram.mmd
+    └── laravel-mapping.md
+```
+
+## Laravel版の設計方針
+
+初期段階では、問い合わせ本体を管理する `inquiries` テーブル1つで構成します。
+
+まずは以下の機能を優先します。
+
+* 問い合わせ登録
+* 問い合わせ一覧表示
+* 問い合わせ詳細表示
+* ステータス変更
+* 管理者返答保存
+* 削除
+
+操作ログ、複数返答履歴、担当者管理などは、後から別テーブルとして追加する想定です。
+
+## 想定テーブル設計
+
+DB化する場合は、まず `inquiries` テーブルを作成する想定です。
+
+| カラム名        | 内容      |
+| ----------- | ------- |
+| id          | 問い合わせID |
+| name        | 問い合わせ者名 |
+| email       | メールアドレス |
+| title       | 件名      |
+| category    | カテゴリ    |
+| body        | 問い合わせ内容 |
+| status      | ステータス   |
+| admin_reply | 管理者返答   |
+| created_at  | 作成日時    |
+| updated_at  | 更新日時    |
+
+将来的に返答履歴やコメントを複数管理する場合は、以下のような別テーブル化も検討します。
+
+```text
+inquiries
+inquiry_replies
+inquiry_comments
+inquiry_logs
+```
+
 ## ログ管理について
 
 操作ログ管理は、問い合わせ登録、ステータス変更、返答保存、削除などの操作履歴を確実に保持する必要があります。
@@ -288,7 +396,7 @@ operation_logs
 ### 拡張予定
 
 * Laravelによるバックエンド実装
-* MySQLの `inquiries` テーブル作成
+* DB保存
 * サーバー側バリデーション
 * 問い合わせ登録処理
 * 問い合わせ一覧取得処理
@@ -304,49 +412,7 @@ operation_logs
 * 対応期限設定
 * ページネーション
 * ダッシュボード機能
-
-## 想定テーブル設計
-
-DB化する場合は、まず `inquiries` テーブルを作成する想定です。
-
-| カラム名        | 内容      |
-| ----------- | ------- |
-| id          | 問い合わせID |
-| name        | 問い合わせ者名 |
-| email       | メールアドレス |
-| title       | 件名      |
-| category    | カテゴリ    |
-| body        | 問い合わせ内容 |
-| status      | ステータス   |
-| admin_reply | 管理者返答   |
-| created_at  | 作成日時    |
-| updated_at  | 更新日時    |
-
-将来的に返答履歴やコメントを複数管理する場合は、以下のような別テーブル化も検討します。
-
-```text
-inquiries
-inquiry_replies
-inquiry_comments
-inquiry_logs
-```
-
-## Laravel化する場合の対応イメージ
-
-現在の静的DemoをLaravel化する場合は、以下のように置き換える想定です。
-
-| 現在の静的Demo                 | Laravel化後              |
-| ------------------------- | ---------------------- |
-| `index.html`              | 問い合わせ登録画面              |
-| `pages/admin-list.html`   | 管理者一覧画面                |
-| `pages/admin-detail.html` | 管理者詳細画面                |
-| `localStorage`            | MySQL                  |
-| `script.js` の登録処理         | Controllerのstore処理     |
-| `script.js` の一覧表示         | Controllerのindex処理     |
-| `script.js` の詳細表示         | Controllerのshow/edit処理 |
-| `script.js` のステータス更新処理    | Controllerのupdate処理    |
-| フロント側入力チェック               | Laravel側バリデーション        |
-| 静的な画面遷移                   | Laravelルーティング          |
+* MySQLへの移行
 
 ## 動作確認手順
 
@@ -539,7 +605,10 @@ GitHub Pagesで静的サイトとして公開。
 
 ### Step 6
 
-Laravel + MySQL構成に拡張し、DB保存・管理者認証・サーバー側バリデーション・操作ログ管理・メール送信などを実装予定。
+Laravel + DB構成に拡張し、DB保存・管理者認証・サーバー側バリデーション・操作ログ管理・メール送信などを実装予定。
+
+初期実装ではSQLiteを使用し、LaravelでDB保存の基本構成を作成します。
+実運用や実務に近い構成を想定する段階で、MySQLへの移行を検討します。
 
 ## 補足
 
@@ -547,4 +616,6 @@ Laravel + MySQL構成に拡張し、DB保存・管理者認証・サーバー側
 
 現時点では本番運用を目的としたものではなく、設計・実装の流れを段階的に理解するための学習用・提案用Demoとして作成しています。
 
-DB保存、サーバー側バリデーション、ログ管理、管理者認証、メール送信などは、Laravel + MySQL化する次段階で実装する想定です。
+DB保存、サーバー側バリデーション、ログ管理、管理者認証、メール送信などは、Laravel + DB構成へ拡張する次段階で実装する想定です。
+
+なお、初期実装ではローカル開発環境で扱いやすいSQLiteを使用し、必要に応じてMySQLへ移行する想定です。
